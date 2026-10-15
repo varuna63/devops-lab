@@ -13,6 +13,6 @@ This repository contains solutions, architecture designs, manifests, automation 
 | **Exercise 05** | [**`exercise-05/`**](./exercise-05/) | **Docker Security with AppArmor Profiles and Python SDK** | **Completed** ✅ |
 | **Exercise 06** | [**`exercise-06/`**](./exercise-06/) | **Real-Time Operations Monitoring & Alerting (Prometheus, Grafana, Jenkins)** | **Completed** ✅ |
 | **Exercise 07** | [**`exercise-07/`**](./exercise-07/) | **Introduction to Continuous Integration (CI) and Jenkins Installation** | **Completed** ✅ |
-| Exercise 08 | [`exercise-08/`](./exercise-08/) | Pending input | Pending ⏳ |
+| **Exercise 08** | [**`exercise-08/`**](./exercise-08/) | **Creating "Hello World" Jenkins Freestyle Job with GitHub SCM** | **Completed** ✅ |
 | Exercise 09 | [`exercise-09/`](./exercise-09/) | Pending input | Pending ⏳ |
 | Exercise 10 | [`exercise-10/`](./exercise-10/) | Pending input | Pending ⏳ |
