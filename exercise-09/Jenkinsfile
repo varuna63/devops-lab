@@ -1,0 +1,104 @@
+pipeline {
+    agent any
+
+    environment {
+        DEPLOY_DIR = "${WORKSPACE}/python-app-deploy"
+        PID_FILE   = "${WORKSPACE}/python-app-deploy/app.pid"
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                echo '[*] Stage 1: Creating virtual environment and installing dependencies...'
+                sh '''
+                    python3 -m venv venv || virtualenv venv
+                    . venv/bin/activate
+                    pip install --upgrade pip
+                    pip install -r exercise-09/python-flask-app/requirements.txt || pip install -r requirements.txt
+                '''
+            }
+        }
+
+        stage('Code Quality') {
+            steps {
+                echo '[*] Stage 2: Running code quality analysis (flake8)...'
+                sh '''
+                    . venv/bin/activate
+                    flake8 exercise-09/python-flask-app/app.py --max-line-length=120 || true
+                '''
+            }
+        }
+
+        stage('Unit Test') {
+            steps {
+                echo '[*] Stage 3: Running unit tests with unittest...'
+                sh '''
+                    . venv/bin/activate
+                    cd exercise-09/python-flask-app || true
+                    python3 -m unittest discover -s . -v
+                '''
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo '[*] Stage 4: Deploying application to mock deployment directory...'
+                sh '''
+                    mkdir -p ${DEPLOY_DIR}
+                    cp exercise-09/python-flask-app/app.py ${DEPLOY_DIR}/ || cp app.py ${DEPLOY_DIR}/
+                    cp exercise-09/python-flask-app/requirements.txt ${DEPLOY_DIR}/ || cp requirements.txt ${DEPLOY_DIR}/
+                    echo "[+] Artifacts deployed to ${DEPLOY_DIR}"
+                '''
+            }
+        }
+
+        stage('Run Application') {
+            steps {
+                echo '[*] Stage 5: Starting Flask application in background...'
+                sh '''
+                    . venv/bin/activate
+                    nohup python3 ${DEPLOY_DIR}/app.py > ${DEPLOY_DIR}/app.log 2>&1 &
+                    echo $! > ${PID_FILE}
+                    echo "[+] Application started with PID: $(cat ${PID_FILE})"
+                    sleep 3
+                '''
+            }
+        }
+
+        stage('Test Live Application') {
+            steps {
+                echo '[*] Stage 6: Testing deployed application endpoint...'
+                sh '''
+                    . venv/bin/activate
+                    cd exercise-09/python-flask-app || true
+                    python3 test_app.py
+                    curl -s http://localhost:5000/ || true
+                '''
+            }
+        }
+    }
+
+    post {
+        always {
+            echo '[*] Cleaning up background application process...'
+            sh '''
+                if [ -f "${PID_FILE}" ]; then
+                    APP_PID=$(cat ${PID_FILE})
+                    echo "[*] Terminating process PID ${APP_PID}..."
+                    kill ${APP_PID} 2>/dev/null || true
+                    rm -f ${PID_FILE}
+                fi
+            '''
+        }
+        success {
+            echo '=================================================='
+            echo '  Multi-Stage CI/CD Pipeline PASSED Successfully! '
+            echo '=================================================='
+        }
+        failure {
+            echo '=================================================='
+            echo '  Multi-Stage CI/CD Pipeline FAILED.              '
+            echo '=================================================='
+        }
+    }
+}
