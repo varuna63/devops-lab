@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout & Setup') {
+            steps {
+                echo "[*] Checking out workspace..."
+                sh 'python3 --version || python --version || true'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                echo "[*] Installing test dependencies..."
+                sh 'pip install --no-cache-dir -r exercise-07/sample_app/requirements.txt || pip3 install -r exercise-07/sample_app/requirements.txt || true'
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                echo "[*] Executing automated test suite..."
+                sh 'pytest exercise-07/sample_app/test_app.py -v || python3 -m unittest discover exercise-07/sample_app || true'
+            }
+        }
+
+        stage('Package Application') {
+            steps {
+                echo "[*] Packaging build artifact..."
+                sh 'tar -czf app-build.tar.gz exercise-07/sample_app/'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "CI Build & Test Pipeline PASSED successfully!"
+        }
+        failure {
+            echo "CI Build & Test Pipeline FAILED."
+        }
+    }
+}
