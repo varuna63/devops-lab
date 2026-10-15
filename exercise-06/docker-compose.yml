@@ -1,0 +1,63 @@
+version: '3.8'
+
+networks:
+  monitoring-net:
+    driver: bridge
+    name: monitoring-net
+
+services:
+  delivery_metrics:
+    build:
+      context: ./delivery_monitoring
+      dockerfile: Dockerfile
+    image: delivery_metrics:latest
+    container_name: delivery_metrics
+    networks:
+      - monitoring-net
+    ports:
+      - "8000:8000"
+    restart: always
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    networks:
+      - monitoring-net
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./delivery_monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./delivery_monitoring/alert_rules.yml:/etc/prometheus/alert_rules.yml:ro
+    depends_on:
+      - delivery_metrics
+    restart: always
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    networks:
+      - monitoring-net
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+    restart: always
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    networks:
+      - monitoring-net
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+
+volumes:
+  jenkins_home:
