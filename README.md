@@ -10,7 +10,7 @@ This repository contains solutions, architecture designs, manifests, automation 
 | **Exercise 02** | [**`exercise-02/`**](./exercise-02/) | **Deploy a Flask App on Minikube using kubectl and YAML** | **Completed** ✅ |
 | **Exercise 03** | [**`exercise-03/`**](./exercise-03/) | **Scaling Flask App on Single Node using ReplicaSets (E-Commerce Flash Sale)** | **Completed** ✅ |
 | **Exercise 04** | [**`exercise-04/`**](./exercise-04/) | **Docker Networking with Multiple Containers (Flask, MySQL, Redis)** | **Completed** ✅ |
-| Exercise 05 | [`exercise-05/`](./exercise-05/) | Pending input | Pending ⏳ |
+| **Exercise 05** | [**`exercise-05/`**](./exercise-05/) | **Docker Security with AppArmor Profiles and Python SDK** | **Completed** ✅ |
 | Exercise 06 | [`exercise-06/`](./exercise-06/) | Pending input | Pending ⏳ |
 | Exercise 07 | [`exercise-07/`](./exercise-07/) | Pending input | Pending ⏳ |
 | Exercise 08 | [`exercise-08/`](./exercise-08/) | Pending input | Pending ⏳ |
