@@ -1,0 +1,24 @@
+# Use the official Python image from Docker Hub
+FROM python:3.9-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Install network utilities (ping & curl) for connectivity verification
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    iputils-ping \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements file and application code
+COPY requirements.txt .
+COPY app.py .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Expose the application port
+EXPOSE 5001
+
+# Run the application
+CMD ["python", "app.py"]
