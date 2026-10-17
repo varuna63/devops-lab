@@ -1,0 +1,6 @@
+FROM python:3.11-slim
+WORKDIR /app
+RUN pip install --no-cache-dir Flask==3.1.1
+COPY product_catalog.py /app/product_catalog.py
+EXPOSE 80
+CMD ["python", "product_catalog.py"]
