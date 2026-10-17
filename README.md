@@ -15,4 +15,4 @@ This repository contains solutions, architecture designs, manifests, automation 
 | **Exercise 07** | [**`exercise-07/`**](./exercise-07/) | **Introduction to Continuous Integration (CI) and Jenkins Installation** | **Completed** ✅ |
 | **Exercise 08** | [**`exercise-08/`**](./exercise-08/) | **Creating "Hello World" Jenkins Freestyle Job with GitHub SCM** | **Completed** ✅ |
 | **Exercise 09** | [**`exercise-09/`**](./exercise-09/) | **Jenkins Multi-Stage Pipeline: Deploying a Python Application** | **Completed** ✅ |
-| Exercise 10 | [`exercise-10/`](./exercise-10/) | Pending input | Pending ⏳ |
+| **Exercise 10** | [**exercise-10/**](./exercise-10/) | **Multi-Node Kubernetes Cluster with Product Catalog and Shopping Cart** | **Completed** ✅ |
